@@ -4,9 +4,9 @@ import firestore from 'firebase/firestore';
 const settings = {timestampsInSnapshots: true};
 console.log('firebase.js settings',settings);
 const config = {
-  apiKey: "AIzaSyCY8v97LHoBaG-n5f_MqU1AGkq5LeWQwEw",
-  databaseURL: "https://cyclezone-6b16e.firebaseio.com/",
-  projectId: "cyclezone-6b16e",
+  apiKey: "",
+  databaseURL: "",
+  projectId: "",
 };
 console.log('config',config);
 if (!firebase.apps.length) {
