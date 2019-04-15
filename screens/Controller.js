@@ -2,9 +2,9 @@ import firebase, {db} from './Firebase';
 import firebaseN from 'react-native-firebase';
 
  export let config = {
-    apiKey: "AIzaSyCY8v97LHoBaG-n5f_MqU1AGkq5LeWQwEw",
-    databaseURL: "https://cyclezone-6b16e.firebaseio.com/",
-    projectId: "cyclezone-6b16e"
+    apiKey: "",
+    databaseURL: "https://",
+    projectId: ""
   };
 
 //export let appIni = firebase.initializeApp(config);
