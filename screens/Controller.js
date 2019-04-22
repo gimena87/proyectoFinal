@@ -2,9 +2,9 @@ import firebase, {db} from './Firebase';
 import firebaseN from 'react-native-firebase';
 
  export let config = {
-    apiKey: "",
-    databaseURL: "https://",
-    projectId: ""
+    apiKey: "AIzaSyCY8v97LHoBaG-n5f_MqU1AGkq5LeWQwEw",
+    databaseURL: "https://cyclezone-6b16e.firebaseio.com/",
+    projectId: "cyclezone-6b16e"
   };
 
 //export let appIni = firebase.initializeApp(config);
@@ -20,12 +20,18 @@ export const posActual = ()=>{
 }
 export const addElemento =  (item,tabla,tablaPadre,id) => {
   if (tablaPadre==null){
+    if (id!=null){
+        tablaRef = db.collection(tabla);
+        tablaRef.doc(id).set(item).then(ref => {
+        console.log('Se agrego el elemento',ref.id);
+      });
+    }else{
       tablaRef = db.collection(tabla);
       var addEl= tablaRef.add(item).then(ref => {
-        console.log('Se agrego el recorrido',ref.id);
-        return ref.id;
+      console.log('Se agrego el elemento',ref.id);
+      return ref.id;
   });
-
+}
   }else{// es un subcampo
     //  console.log( 'llego',db.collection('usuarios').doc('KjVYU1KeN4pbdFLu0o5B').collection('recorridos').add(item));
       tablaRef = db.collection('usuarios').doc('KjVYU1KeN4pbdFLu0o5B').collection('recorridos').doc(id);
@@ -35,6 +41,14 @@ export const addElemento =  (item,tabla,tablaPadre,id) => {
   });
   }
   //  tablaRef = db.collection(tabla);
+}
+
+export const deleteElemento =(tabla,id) =>{
+  db.collection(tabla).doc(id).delete().then(function() {
+    console.log("Document successfully deleted!");
+}).catch(function(error) {
+    console.error("Error removing document: ", error);
+});
 }
 export const fechaActual = ()=>{
   var hoy = new Date();
@@ -54,6 +68,15 @@ export const addRecorrido = (item,usuario) =>{
 
   });
 });
+}
+
+export const existeRegistro = (id,tabla) =>{
+  tabla = db.collection(tabla);
+  console.log('tabla id', id);
+  tabla.doc(id).get().then(doc =>{
+    console.log('doc.exist',doc.exists);
+    return doc.exists;
+  })
 }
 export const addRecorridoExistente =(item,usuario) => {
 
@@ -137,12 +160,8 @@ export const updateElemento =  (item) => {
 export const obtenerDatosUser = (user) => {
   return db.collection('usuarios').doc(user).get();
 }
-export const deleteElemento =  (item) => {
-    console.log(item);
-/**    db.ref('/recorridos').push({
-        name: item
-    });*/
-}
+
+
 
 export const listaDatos = (filtro,val,tabla) =>{
   console.log('listaDatos');
