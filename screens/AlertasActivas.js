@@ -1,8 +1,7 @@
 import React from 'react'
-import {View,StyleSheet,Text,Image} from 'react-native';
+import {View,StyleSheet,Text,Image,Button} from 'react-native';
 import MapView,{Marker} from 'react-native-maps';
 import {db} from './Firebase';
-import markerImg from "../img/iconAlert.jpg"
 export default class AlertasActivas extends React.Component{
   constructor(props){
       super(props);
@@ -15,9 +14,9 @@ export default class AlertasActivas extends React.Component{
           },
           markers: [],
           datosAlerta:[],
+          alarmaSeleccionada:false
         };
   }
-
  componentDidMount() {
    var wholeData = [];
        db.collection('alertas').onSnapshot(snapshot => {
@@ -30,10 +29,10 @@ export default class AlertasActivas extends React.Component{
  }
 
 getDatosAlerta = alerta=>{
-  this.setState({datosAlerta:alerta});
+  this.setState({datosAlerta:alerta,alarmaSeleccionada:true});
 };
   getResponse(datosAlerta){
-       this.setState({datosAlerta:datosAlerta});
+       this.setState({datosAlerta:datosAlerta,alarmaSeleccionada:true});
    }
 
   getTipoAlerta = (nro) =>{
@@ -69,11 +68,11 @@ getDatosAlerta = alerta=>{
           {this.state.markers && this.state.markers.map(marker => (
              <MapView.Marker
                key={marker.usuario}
-               image={require('D:\\Proyecto Final\\proyectoFinal\\img\\iconAlert.jpg')}
                coordinate={marker.posicion}
                title={this.getTipoAlerta(marker.tipo)}
                description={marker.descripcion}
-                onPress={() =>{this.getDatosAlerta(marker)}}/>
+                onPress={() =>{this.getDatosAlerta(marker)}}
+                pinColor={'indigo'}/>
 
            ))}
      </MapView>
@@ -83,6 +82,11 @@ getDatosAlerta = alerta=>{
        <Text style ={{fontWeight: 'bold'}}> Tipo alerta:{this.getTipoAlerta(this.state.datosAlerta.tipo)}</Text>
        <Text style ={{fontWeight: 'bold'}}> Descripcion alerta:{this.state.datosAlerta.descripcion}</Text>
       </View>
+      {(this.state.alarmaSeleccionada)?<Button
+         buttonStyle={{ height: 30, marginTop:15, backgroundColor: "#a7cb68"}}
+        // onPress={this.eliminarAlerta}
+         title="Auxiliar"
+       />:null}
       </View>
     );
   }

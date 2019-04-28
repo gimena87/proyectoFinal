@@ -9,30 +9,43 @@ import MapaOnLine from './componentes/MapaOnLine'
 export default class Main extends React.Component {
 constructor(props){
   super(props);
-  this.state = {markers:[]};
+  this.state = {markers:[],markersA:[]};
 }
 componentDidMount() {
   var wholeData = [];
+  var wholeDataA = [];
   db.collection('usuariosOnline').get()
        .then(snapshot => {
         snapshot.forEach(doc => {
-          console.log('usuarioOnline: ',doc.data());
             datos=[];
-            datos.title=doc.id;
-            datos.latlng = doc.data().ubicacion;
-            datos.description = doc.data().email;
+            datos.nombre=doc.id;
+            datos.latlng = {latitude:doc.data().posicionActual[0],longitude:doc.data().posicionActual[1]};
+            datos.email = doc.id;
             wholeData.push(datos);
         });
+
+        db.collection('alertas').onSnapshot(snapshot => {
+          snapshot.forEach(doc => {
+            datos= doc.data();
+                datos.title=doc.id;
+                datos.email=doc.id;
+                datos.latlng = {latitude:doc.data().posicion[0],longitude:doc.data().posicion[1]};
+                datos.descripcion = doc.descripcion;
+               wholeDataA.push(datos);
+          });
+          this.setState({markers:wholeData,markersA:wholeDataA});
       })
+    })
       .catch(error => {
         console.log('Error!', error);
       })
-      this.setState({markers:wholeData});
+
 }
 render() {
+  console.log('this.state.markers',this.state.markers);
    return (
      <View style={{flex: 1, flexDirection: 'column'}}>
-     <MapaOnLine />
+     <MapaOnLine amigos ={this.state.markers} alertas = {this.state.markersA} />
            <View style={{flexDirection: 'column',margin: 5, alignItems: 'center'}}>
               <BotonesMenu name="map-signs"  screen="Recorridos" onPress={()=>this.props.navigation.push('Recorridos')} />
               <BotonesMenu name="users"  screen="Amigos"  navigation={this.props.navigation} onPress={()=>this.props.navigation.push('Amigos')} />
