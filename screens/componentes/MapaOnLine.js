@@ -52,6 +52,7 @@ getDatosAmigos(amigo){
     markers = (cord.length==0)?[]:[{title:"Inicio",description:"Punto inicio del recorrido",latlng:{ latitude:cord[0].latitude, longitude:cord[0].longitude }}, markerFin =  {title:"Fin",description:"Punto final del recorrido",latlng:{ latitude:cord[cord.length-1].latitude, longitude:cord[cord.length-1].longitude }}];
     markersN= (this.props.markersN)?this.props.markersN:[];
     amigos = (this.props.amigos)?this.props.amigos:[];
+    alertas = (this.props.alertas)?this.props.alertas:[];
     return(
       <View>
               <MapView
@@ -83,9 +84,20 @@ getDatosAmigos(amigo){
                          key={marker.email}
                          coordinate={marker.latlng}
                          title={marker.nombre}
-                         onPress={() =>{this.getDatosAmigos(marker)}}
+                         description={marker.description}
+                      //   onPress={() =>{this.getDatosAmigos(marker)}}
                        />
                      ))}
+                     {alertas && alertas.map(marker => (
+                        <MapView.Marker
+                          key={marker.email}
+                          coordinate={marker.latlng}
+                          title={marker.title+" - "+marker.descripcion}
+                          pinColor={"indigo"}
+                          description={marker.descripcion}
+                        //  onPress={() =>{this.getDatosAlerta(marker)}}
+                        />
+                      ))}
                   <MapView.Polyline
                     coordinates={cord}
                     strokeWidth={3}
