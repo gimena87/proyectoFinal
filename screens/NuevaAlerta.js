@@ -46,7 +46,7 @@ export default class NuevaAlerta extends React.Component{
 
 enviarMje = (tel,desc,tipo,posicion,user)=>{
   var SendIntentAndroid = require('react-native-send-intent');
-  Geocoder.init('AIzaSyDN30Cqhe2v7tVYm2f6p2Y5ClsFhnosYhA');
+  Geocoder.init('');
   Geocoder.from(posicion[0], posicion[1]).then(json => {
           var addressComponent = json.results[0].address_components[0];
           SendIntentAndroid.sendSms('+54'+tel,user+' tuvo el siguiente problema: '+ desc +' en '+addressComponent);
